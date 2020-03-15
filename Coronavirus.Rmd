@@ -14,8 +14,3 @@ local_data %>% group_by(Country) %>% mutate(days_since_start = difftime(Date, mi
 
 
 ```
-
-```{r}
-data %>% filter(`Country/Region` %in% c('Serbia', "Bosnia and Herzegovina", "Croatia", "Slovenia", "North Macedonia", "Kosovo", "Albania", "Montenegro")) %>% distinct() %>% group_by(`Country/Region`) %>% mutate(days_since_start = min(`Last Update`) - `Last Update`)
-```
-
