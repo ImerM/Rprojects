@@ -1,0 +1,21 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+```{r}
+library(tidyverse)
+library(ggthemes)
+time_series_19_covid_Confirmed <- read_csv(url("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv"))
+local_data <- time_series_19_covid_Confirmed %>% select(Country  = `Country/Region`, everything(), -Lat, -Long, -`Province/State`) %>% pivot_longer(-Country, "Date") %>% filter(Country %in% c('Serbia', "Bosnia and Herzegovina", "Croatia", "Slovenia", "North Macedonia", "Kosovo", "Albania", "Montenegro")) %>% filter(value > 0)
+local_data$Date <- local_data$Date %>% as.Date(format="%m/%d/%y")
+local_data %>% group_by(Country) %>% mutate(days_since_start = difftime(Date, min(Date), units = "days")) %>% ggplot(aes(days_since_start, value, color = Country)) + geom_line(size = 2) + theme_wsj() + theme(legend.text = element_text(size = 12)) + scale_color_brewer(palette = "Set2") + labs(title = "Number of COVID19 cases in Western Balkans \n since first reported case", caption ="Data source:https://github.com/CSSEGISandData/COVID-19/", subtitle = "By: Imer Muhovic @imerm1", x = "Days since first reported")
+
+
+```
+
+```{r}
+data %>% filter(`Country/Region` %in% c('Serbia', "Bosnia and Herzegovina", "Croatia", "Slovenia", "North Macedonia", "Kosovo", "Albania", "Montenegro")) %>% distinct() %>% group_by(`Country/Region`) %>% mutate(days_since_start = min(`Last Update`) - `Last Update`)
+```
+
